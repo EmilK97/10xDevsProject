@@ -1,0 +1,10 @@
+## TESTING
+
+### Guidelines for UNIT
+
+#### PYTEST
+
+- Use fixtures for test setup and dependency injection
+- Implement parameterized tests for testing multiple inputs for {{function_types}}
+- Use monkeypatch for mocking dependencies
+
