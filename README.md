@@ -1,13 +1,15 @@
 # BoardGameTracker
 
-A simple web application to help board game enthusiasts track their collection and identify rarely used games.
+A simple web application designed to help users track their board game collection and identify rarely used games.
 
 ## Table of Contents
 - [Project Description](#project-description)
 - [Tech Stack](#tech-stack)
 - [Getting Started Locally](#getting-started-locally)
 - [Available Scripts](#available-scripts)
-- [Project Scope](#project-scope)
+- [Project Structure](#project-structure)
+- [Data Models](#data-models)
+- [Important Information](#important-information)
 - [Project Status](#project-status)
 - [License](#license)
 
@@ -38,81 +40,94 @@ This application is non-commercial and was created as a demonstration project fo
 - Django's authentication system for user management
 - Django Admin panel for administrative functions
 
-### CI/CD & Hosting
-- GitHub Actions for CI/CD pipelines
-- DigitalOcean for hosting via Docker image
-
 ## Getting Started Locally
 
 ### Prerequisites
-- Python 3.x
-- Git
+- Python 3.10.11
+- Django 4.x
+- SQLite (default database)
 
 ### Installation Steps
-1. Clone the repository
-   ```
-   git clone https://github.com/yourusername/boardgametracker.git
-   cd boardgametracker
-   ```
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd boardGameTracker
+```
 
-2. Create and activate a virtual environment
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+2. (Optional) Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+# or
+venv\Scripts\activate  # Windows
+```
 
-3. Install dependencies
-   ```
-   pip install -r requirements.txt
-   ```
+3. Install required dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-4. Run database migrations
-   ```
-   python manage.py migrate
-   ```
+4. Set up the database:
+```bash
+# Generate migration files based on models
+python manage.py makemigrations boardGameApp
 
-5. Create a superuser (for admin access)
-   ```
-   python manage.py createsuperuser
-   ```
+# Apply migrations to the database
+python manage.py migrate
+```
 
-6. Start the development server
-   ```
-   python manage.py runserver
-   ```
+5. Create an admin account:
+```bash
+python manage.py createsuperuser
+```
+
+6. Start the development server:
+```bash
+python manage.py runserver
+```
 
 7. Access the application at http://localhost:8000
 
-## Available Scripts
+## Project Structure
 
-- `python manage.py runserver` - Start the development server
-- `python manage.py migrate` - Apply database migrations
-- `python manage.py makemigrations` - Create new migrations based on model changes
-- `python manage.py test` - Run tests
-- `python manage.py createsuperuser` - Create an admin user
+- `boardGameTracker/` - main Django project directory
+  - `boardGameApp/` - board game management application
+    - `models.py` - data models (BoardGame, UserProfile)
+    - `views.py` - view logic
+    - `templates/` - HTML templates
+    - `static/` - static files (CSS, JavaScript)
 
-## Project Scope
+## Data Models
 
-### Included in MVP
-- Simple registration and login (username and password only)
-- Board game library with user profiles
-- Game categorization (two-player/multiplayer)
-- Automatic warning and alert flags for unused games
-- Last gameplay date updates
-- Filtering games with alerts or warnings
-- Admin panel for user management
-- Web interface
+The application contains two main models:
 
-### Not Included in Current Version
-- Game quality ratings (1-10 scale)
-- Email notifications about game alerts
-- Game set sharing between users
-- Integrations with other online platforms
-- Mobile applications
-- Game deletion or editing functionality
-- Customizable time thresholds for alerts
-- Password reset capability
-- Account deletion functionality
+1. `UserProfile` - extension of Django's standard User model
+2. `BoardGame` - board game model with fields:
+   - name
+   - owner (relationship with User)
+   - game type (two-player/multiplayer)
+   - last played date
+   - status (normal/warning/alarm) - automatically calculated
+
+## Important Information
+
+### Database Migrations
+
+After any changes to the models (`models.py`), you need to generate and apply new migrations:
+
+```bash
+python manage.py makemigrations boardGameApp  # generates new migrations
+python manage.py migrate  # applies migrations to the database
+```
+
+Migrations are crucial for:
+- Creating the initial database structure
+- Updating the structure after model changes
+- Maintaining data consistency
+
+### Admin Panel Access
+
+The admin panel is available at `/admin/` after logging in with superuser credentials.
 
 ## Project Status
 
