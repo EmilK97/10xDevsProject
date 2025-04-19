@@ -1,6 +1,6 @@
-# 10xDevsProjekt
+# BoardGameTracker
 
-A modern web application for efficient project management and team collaboration.
+A simple web application to help board game enthusiasts track their collection and identify rarely used games.
 
 ## Table of Contents
 - [Project Description](#project-description)
@@ -13,148 +13,117 @@ A modern web application for efficient project management and team collaboration
 
 ## Project Description
 
-10xDevsProjekt is a comprehensive project management tool designed to streamline development workflows and enhance team collaboration. The application provides a centralized platform for managing projects, tracking tasks, and facilitating team communication.
+BoardGameTracker is a web application designed to help users track their board game collection and identify rarely used games. The app allows users to maintain their own board game library, track last gameplay dates, and automatically flag games that haven't been used for a long time.
 
-### Key Features
-- User authentication and authorization
-- Project creation and management
-- Task tracking and assignment
-- Team collaboration tools
-- Real-time updates
-- Project analytics and reporting
+### Main Features
+- Simple registration and login system
+- Board game library management
+- Automatic flagging of rarely used games (warnings after 1 year, alerts after 3 years)
+- Last gameplay date updates with a simple "Played Today" button
+- Collection filtering and browsing
+- Admin panel for user and game management
+
+This application is non-commercial and was created as a demonstration project for a course.
 
 ## Tech Stack
 
-### Backend
-- Python 3.x
-- FastAPI
-- SQLAlchemy
-- Pydantic
-- PostgreSQL
-- Alembic (Database migrations)
-
 ### Frontend
-- React
-- TypeScript
-- Modern UI components
-- Responsive design
+- HTML, CSS, and vanilla JavaScript
+- Simple, modern design with white background and light blue interactive elements
+- No complex frameworks - focusing on simplicity and ease of implementation
 
-### Development Tools
-- Git for version control
-- Docker (optional)
-- VS Code recommended
+### Backend
+- Python with Django framework
+- SQLite database (built-in with Django)
+- Django's authentication system for user management
+- Django Admin panel for administrative functions
+
+### CI/CD & Hosting
+- GitHub Actions for CI/CD pipelines
+- DigitalOcean for hosting via Docker image
 
 ## Getting Started Locally
 
 ### Prerequisites
 - Python 3.x
-- Node.js and npm
-- PostgreSQL
 - Git
 
-### Installation
+### Installation Steps
+1. Clone the repository
+   ```
+   git clone https://github.com/yourusername/boardgametracker.git
+   cd boardgametracker
+   ```
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/10xDevsProjekt.git
-cd 10xDevsProjekt
-```
+2. Create and activate a virtual environment
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-2. Set up the backend:
-```bash
-# Create and activate virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+3. Install dependencies
+   ```
+   pip install -r requirements.txt
+   ```
 
-# Install dependencies
-pip install -r requirements.txt
+4. Run database migrations
+   ```
+   python manage.py migrate
+   ```
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your configuration
-```
+5. Create a superuser (for admin access)
+   ```
+   python manage.py createsuperuser
+   ```
 
-3. Set up the frontend:
-```bash
-cd frontend
-npm install
-```
+6. Start the development server
+   ```
+   python manage.py runserver
+   ```
 
-4. Database setup:
-```bash
-# Create PostgreSQL database
-createdb 10xdevsprojekt
-
-# Run migrations
-alembic upgrade head
-```
-
-5. Run the application:
-```bash
-# Start backend server
-uvicorn app.main:app --reload
-
-# In a new terminal, start frontend
-cd frontend
-npm start
-```
+7. Access the application at http://localhost:8000
 
 ## Available Scripts
 
-### Backend
-```bash
-# Run tests
-pytest
-
-# Run migrations
-alembic upgrade head
-
-# Generate migrations
-alembic revision --autogenerate -m "description"
-```
-
-### Frontend
-```bash
-# Start development server
-npm start
-
-# Build for production
-npm run build
-
-# Run tests
-npm test
-```
+- `python manage.py runserver` - Start the development server
+- `python manage.py migrate` - Apply database migrations
+- `python manage.py makemigrations` - Create new migrations based on model changes
+- `python manage.py test` - Run tests
+- `python manage.py createsuperuser` - Create an admin user
 
 ## Project Scope
 
-### Core Features
-- User authentication and profile management
-- Project creation and configuration
-- Task management and tracking
-- Team collaboration tools
-- Project analytics and reporting
+### Included in MVP
+- Simple registration and login (username and password only)
+- Board game library with user profiles
+- Game categorization (two-player/multiplayer)
+- Automatic warning and alert flags for unused games
+- Last gameplay date updates
+- Filtering games with alerts or warnings
+- Admin panel for user management
+- Web interface
 
-### Future Plans
-- Real-time notifications
-- Advanced analytics dashboard
-- Integration with third-party tools
-- Mobile application
+### Not Included in Current Version
+- Game quality ratings (1-10 scale)
+- Email notifications about game alerts
+- Game set sharing between users
+- Integrations with other online platforms
+- Mobile applications
+- Game deletion or editing functionality
+- Customizable time thresholds for alerts
+- Password reset capability
+- Account deletion functionality
 
 ## Project Status
 
-The project is currently in active development. We are working on implementing core features and improving the user experience.
+This project is currently in development. The MVP is being implemented according to the requirements specified in the PRD.
 
-### Current Focus
-- Core functionality implementation
-- Performance optimization
-- User interface improvements
-- Documentation
-
-### Known Issues
-- Some features are still in development
-- Performance optimization needed for large datasets
-- Mobile responsiveness improvements planned
+### Success Metrics
+1. 90% of users can register without assistance
+2. 95% of users can add a new game to their library without assistance
+3. 100% of games are correctly flagged with warnings and alerts
+4. 80% of users understand the meaning of color markings for games
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
+This project is distributed under the MIT License. See the LICENSE file for details. 
