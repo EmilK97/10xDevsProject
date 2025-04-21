@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
+import string
+import random
 
 class GameType(models.TextChoices):
     """
@@ -69,7 +71,9 @@ class BoardGame(models.Model):
     """
     Represents a board game in a user's collection.
     Tracks game details and automatically computes warning/alert status based on last played date.
+    Each game has a unique 8-character ID consisting of random ASCII letters.
     """
+    id = models.CharField(max_length=8, primary_key=True)
     name = models.CharField(max_length=200)
     # This ForeignKey creates a reverse relation accessible as 'games' on User model
     # because of related_name='games'. This allows queries like user.games.all()
@@ -108,3 +112,13 @@ class BoardGame(models.Model):
         """Updates the last_played date to now."""
         self.last_played = timezone.now()
         self.save()
+
+    def generate_random_id(self):
+        """Generates and sets a random 8-character string ID using ASCII letters."""
+        self.id = ''.join(random.choices(string.ascii_letters, k=8))
+
+    def save(self, *args, **kwargs):
+        """Override save method to ensure ID is set before saving."""
+        if not self.id:
+            self.generate_random_id()
+        super().save(*args, **kwargs)
