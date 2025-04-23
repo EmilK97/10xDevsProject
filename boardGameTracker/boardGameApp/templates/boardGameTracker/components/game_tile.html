@@ -1,4 +1,5 @@
 {% load static %}
+{% load game_filters %}
 
 <div class="game-tile {% if game.status == 'WARNING' %}warning{% elif game.status == 'ALARM' %}alarm{% endif %}"
      onclick="window.location.href='{% url 'game_details' game.id %}'">

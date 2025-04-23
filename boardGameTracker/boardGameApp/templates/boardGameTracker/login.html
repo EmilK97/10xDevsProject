@@ -1,4 +1,5 @@
 {% extends 'boardGameTracker/base.html' %}
+{% load static %}
 
 {% block title %}Logowanie - BoardGameTracker{% endblock %}
 
@@ -7,16 +8,20 @@
     <h2>Logowanie</h2>
     <p>Witaj w BoardGameTracker! Zaloguj się, aby zarządzać swoją kolekcją gier planszowych.</p>
     
-    <form method="post" action="{% url 'login' %}">
+    <form method="post" action="{% url 'login' %}" id="login-form">
         {% csrf_token %}
         <div class="form-group">
             <label for="username">Nazwa użytkownika:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username" required
+                   pattern="^[a-zA-Z0-9_]{3,20}$"
+                   title="Nazwa użytkownika musi mieć od 3 do 20 znaków i może zawierać tylko litery, cyfry i podkreślenia">
         </div>
         
         <div class="form-group">
             <label for="password">Hasło:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required
+                   minlength="8"
+                   title="Hasło musi mieć co najmniej 8 znaków">
         </div>
         
         <button type="submit" class="btn btn-primary">Zaloguj się</button>
@@ -27,4 +32,8 @@
         <a href="{% url 'register' %}">Zarejestruj się</a>
     </p>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'boardGameApp/js/forms.js' %}"></script>
 {% endblock %} 
