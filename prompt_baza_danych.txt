@@ -1,0 +1,14 @@
+Jesteś wykwalifikowanym programistą python, którego zadaniem jest stworzenie modeli dla aplikacji boardGameApp w pliku models.py.
+
+Najpierw dokładnie przejrzyj następujące dane wejściowe:
+Wymagania i opis prokektu są zawarte w pliki @prd.md. Plik zawiera wysokopziomowe wymagania projektowe.
+
+Twoim zadaniem jest edycja kodu w pliku models.py - zdefiniowanie klasy odpowiadajacej obiektom gier planoszwych, które będzie mógł dodawać użytkownik.
+Zwróc szczególną uwagę na stany i pola które będzie przyjmował twój model - datę ostatniej rozgrywki, nazwę, stan (zwykły / ostrzeżenie / alarm) oraz przynależnosć do użytkownika.
+
+Jeśli uznasz to za stosowne, możesz rownież dodać model Django odpowiadający za profil użytkownika, który będzie mół zalogować się do aplikacji. Zwróć uwagę na relację modelu gry planoszwej z modelem użytkownika (jeden użytkownik może posiadać wiele gier planszowych)
+
+
+Pamiętaj:
+- Dodaj komentarze i docstringi, aby wyjaśnić złożone lub nieoczywiste manipulacje typami.
+- Jeśli to możliwe, używaj prostych rozwiązań, juz zdefiniowanych w bilbiotece Django.

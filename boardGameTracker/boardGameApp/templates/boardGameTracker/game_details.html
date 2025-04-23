@@ -1,0 +1,182 @@
+{% extends 'boardGameTracker/base.html' %}
+{% load static %}
+
+{% block title %}{{ game.name }} - BoardGameTracker{% endblock %}
+
+{% block content %}
+<div class="game-details">
+    <div class="game-details-header">
+        <a href="{% url 'library' %}" class="btn btn-back">
+            &larr; Powrót do biblioteki
+        </a>
+        <h2>{{ game.name }}</h2>
+    </div>
+
+    <div class="game-details-content">
+        <div class="game-info-card {% if game.status == 'WARNING' %}warning{% elif game.status == 'ALARM' %}alarm{% endif %}">
+            <div class="game-type">
+                <span class="emoji">
+                    {% if game.game_type == 'TWO' %}
+                        👥
+                    {% else %}
+                        👥👥
+                    {% endif %}
+                </span>
+                <span class="type-label">
+                    {{ game.get_game_type_display }}
+                </span>
+            </div>
+
+            <div class="game-stats">
+                <div class="stat-row">
+                    <span class="label">Data ostatniej rozgrywki:</span>
+                    <span class="value">{{ game.last_played|date:"d.m.Y" }}</span>
+                </div>
+                
+                <div class="stat-row">
+                    <span class="label">Dni od ostatniej gry:</span>
+                    <span class="value {% if game.status != 'NORMAL' %}highlight{% endif %}">
+                        {{ game.last_played|timesince:now|split:" "|first }}
+                    </span>
+                </div>
+
+                <div class="stat-row">
+                    <span class="label">Status:</span>
+                    <span class="value status-badge {{ game.status|lower }}">
+                        {{ game.get_status_display }}
+                    </span>
+                </div>
+
+                <div class="stat-row">
+                    <span class="label">ID gry:</span>
+                    <span class="value">{{ game.id }}</span>
+                </div>
+
+                <div class="stat-row">
+                    <span class="label">Data dodania:</span>
+                    <span class="value">{{ game.created_at|date:"d.m.Y" }}</span>
+                </div>
+            </div>
+
+            <form method="post" action="{% url 'mark_as_played' game.id %}" class="mark-played-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    Zagrałem dzisiaj
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .game-details {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .game-details-header {
+        margin-bottom: 2rem;
+    }
+
+    .game-details-header h2 {
+        margin: 1rem 0;
+        font-size: 2rem;
+    }
+
+    .btn-back {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    .btn-back:hover {
+        text-decoration: underline;
+    }
+
+    .game-info-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .game-info-card.warning {
+        border: 2px solid var(--warning-color);
+    }
+
+    .game-info-card.alarm {
+        border: 2px solid var(--alarm-color);
+    }
+
+    .game-type {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .game-type .emoji {
+        font-size: 2rem;
+    }
+
+    .game-type .type-label {
+        font-size: 1.2rem;
+        color: #666;
+    }
+
+    .game-stats {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stat-row .label {
+        color: #666;
+    }
+
+    .stat-row .value {
+        font-weight: 500;
+    }
+
+    .stat-row .value.highlight {
+        color: var(--warning-color);
+    }
+
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+    }
+
+    .status-badge.normal {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-badge.warning {
+        background-color: #fff3e0;
+        color: #ef6c00;
+    }
+
+    .status-badge.alarm {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    .mark-played-form {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
+        text-align: center;
+    }
+</style>
+{% endblock %} 

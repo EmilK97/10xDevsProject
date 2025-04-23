@@ -1,0 +1,114 @@
+{% extends 'boardGameTracker/base.html' %}
+{% load static %}
+
+{% block title %}Moja biblioteka - BoardGameTracker{% endblock %}
+
+{% block content %}
+<div class="library-container">
+    <!-- Library stats -->
+    <div class="library-stats">
+        <div class="stat-item">
+            <span class="stat-label">Wszystkie gry:</span>
+            <span class="stat-value">{{ user.profile.total_games }}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Gry z alarmem:</span>
+            <span class="stat-value warning">{{ user.profile.games_with_alerts }}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Gry z ostrzeżeniem lub alarmem:</span>
+            <span class="stat-value alert">{{ user.profile.games_with_warnings_or_alerts }}</span>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="library-filters">
+        <div class="filter-toggle">
+            <input type="checkbox" id="show-normal" checked>
+            <label for="show-normal">Pokaż gry bez ostrzeżeń</label>
+        </div>
+        <div class="filter-toggle">
+            <input type="checkbox" id="show-warning" checked>
+            <label for="show-warning">Pokaż gry z ostrzeżeniami</label>
+        </div>
+        <div class="filter-toggle">
+            <input type="checkbox" id="show-alarm" checked>
+            <label for="show-alarm">Pokaż gry z alarmami</label>
+        </div>
+    </div>
+
+    <!-- Add game button -->
+    <button class="btn btn-primary add-game-btn" onclick="showAddGameModal()">
+        Dodaj grę planszową
+    </button>
+
+    <!-- Games grid -->
+    <div class="games-grid">
+        {% for game in games %}
+            {% include 'boardGameTracker/components/game_tile.html' with game=game %}
+        {% empty %}
+            <div class="empty-library">
+                <p>Twoja biblioteka jest pusta. Dodaj swoją pierwszą grę!</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if games.has_other_pages %}
+    <div class="pagination">
+        {% if games.has_previous %}
+            <a href="?page={{ games.previous_page_number }}" class="btn">Poprzednia</a>
+        {% endif %}
+        
+        <span class="current-page">
+            Strona {{ games.number }} z {{ games.paginator.num_pages }}
+        </span>
+        
+        {% if games.has_next %}
+            <a href="?page={{ games.next_page_number }}" class="btn">Następna</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<!-- Add game modal template -->
+<div id="add-game-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="hideAddGameModal()">&times;</span>
+        <h2>Dodaj nową grę</h2>
+        <form method="post" action="{% url 'add_game' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="game-name">Nazwa gry:</label>
+                <input type="text" id="game-name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Typ gry:</label>
+                <div class="radio-group">
+                    <input type="radio" id="two-player" name="game_type" value="TWO" required>
+                    <label for="two-player">Dwuosobowa</label>
+                    
+                    <input type="radio" id="multiplayer" name="game_type" value="MULTI" checked>
+                    <label for="multiplayer">Wieloosobowa</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="last-played">Data ostatniej rozgrywki:</label>
+                <input type="date" id="last-played" name="last_played" 
+                       value="{{ today|date:'Y-m-d' }}" max="{{ today|date:'Y-m-d' }}" required>
+            </div>
+            
+            <div class="modal-buttons">
+                <button type="button" class="btn" onclick="hideAddGameModal()">Anuluj</button>
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'boardGameApp/js/library.js' %}"></script>
+{% endblock %} 

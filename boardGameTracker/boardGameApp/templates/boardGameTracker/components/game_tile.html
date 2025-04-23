@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="game-tile {% if game.status == 'WARNING' %}warning{% elif game.status == 'ALARM' %}alarm{% endif %}"
+     onclick="window.location.href='{% url 'game_details' game.id %}'">
+    <div class="game-type-emoji">
+        {% if game.game_type == 'TWO' %}
+            👥
+        {% else %}
+            👥👥
+        {% endif %}
+    </div>
+    
+    <h3 class="game-name">{{ game.name }}</h3>
+    
+    <div class="game-info">
+        <div class="last-played">
+            <span class="label">Ostatnia gra:</span>
+            <span class="value">{{ game.last_played|date:"d.m.Y" }}</span>
+        </div>
+        
+        <div class="days-since">
+            <span class="label">Dni od ostatniej gry:</span>
+            <span class="value {% if game.status != 'NORMAL' %}highlight{% endif %}">
+                {{ game.last_played|timesince:now|split:" "|first }}
+            </span>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,63 @@
+Twoim zadaniem jest zaimplementowanie widoku frontendu w oparciu o podany plan implementacji i zasady implementacji. Twoim celem jest stworzenie szczegółowej i dokładnej implementacji, która jest zgodna z dostarczonym planem, poprawnie reprezentuje strukturę komponentów, integruje się z API i obsługuje wszystkie określone interakcje użytkownika.
+
+Najpierw przejrzyj plan implementacji:
+
+<implementation_plan>
+.ai\ui-plan.md
+</implementation_plan>
+
+Teraz przejrzyj zasady implementacji:
+
+<implementation_rules>
+Wszystkie stowrzone prze Ciebie pliki powinny byc zgodne ze standardowym sposobem organizacji kodu i plików statycznych w Django. Oznacza to, że:
+
+Wszystkie pliki statyczne powinny być ulokowane w istniejącym folderze 'static', w szczególności:
+- pliki stylu css w boardGameTracker/static/boardGameApp/css
+- pliki js w boardGameTracker/static/boardGameApp/js
+- pliki tsx w boardGameTracker/static/boardGameApp/tsx
+Jeśli będzie istniała potrzeba dodania nowej kategorii plików statycznych (np. zdjęć) - stwórz nowy folder w boardGameTracker/static/
+
+Wszystkie wzorniki widoków w formacie .html powinny być ulokowane w folderze: boardGameTracker/boardGameApp/templates/boardGameTracker
+
+Każdy widok powinien być osobną funckją pythona, zadeklarowaną w pliku boardGameTracker/boardGameApp/views.py. Nazwa funckji w pythonie powinna odpowiadać nazwie wzornika .html. W ciele funckji, korzystaj z funckji 'redirect' z pakietu Django.
+Każdy adres URL widok powinien być zarejestrowany w pliku boardGameTracker/boardGameTracker/urls.py - zgodnie ze standardowymi zasadami organizacj projektu w Django.
+</implementation_rules>
+
+Wdrażaj plan zgodnie z następującym podejściem:
+
+<implementation_approach>
+Realizuj maksymalnie 3 kroki planu implementacji, podsumuj krótko co zrobiłeś i opisz plan na 3 kolejne działania - zatrzymaj w tym momencie pracę i czekaj na mój feedback.
+</implementation_approach>
+
+Dokładnie przeanalizuj plan wdrożenia i zasady. Zwróć szczególną uwagę na strukturę komponentów, wymagania dotyczące integracji API i interakcje użytkownika opisane w planie.
+
+Wykonaj następujące kroki, aby zaimplementować widok frontendu:
+
+1. Struktura komponentów:
+   - Zidentyfikuj wszystkie komponenty wymienione w planie wdrożenia.
+   - Utwórz hierarchiczną strukturę tych komponentów.
+   - Upewnij się, że obowiązki i relacje każdego komponentu są jasno zdefiniowane.
+
+2. Interakcje użytkownika:
+   - Wylistuj wszystkie interakcje użytkownika określone w planie wdrożenia.
+   - Wdróż obsługi zdarzeń dla każdej interakcji.
+   - Upewnij się, że każda interakcja wyzwala odpowiednią akcję lub zmianę stanu.
+
+3. Zarządzanie stanem:
+   - Zidentyfikuj wymagany stan dla każdego komponentu.
+   - Zaimplementuj zarządzanie stanem przy użyciu odpowiedniej metody (stan lokalny, custom hook, stan współdzielony).
+   - Upewnij się, że zmiany stanu wyzwalają niezbędne ponowne renderowanie.
+
+4. Stylowanie i layout:
+   - Zastosuj określone stylowanie i layout, jak wspomniano w planie wdrożenia.
+   - Zapewnienie responsywności, jeśli wymaga tego plan.
+
+5. Obsługa błędów i przypadki brzegowe:
+   - Wdrożenie obsługi błędów dla wywołań API i interakcji użytkownika.
+   - Rozważ i obsłuż potencjalne edge case'y wymienione w planie.
+   
+
+
+W trakcie całego procesu implementacji należy ściśle przestrzegać dostarczonych zasad implementacji. Zasady te mają pierwszeństwo przed wszelkimi ogólnymi najlepszymi praktykami, które mogą być z nimi sprzeczne.
+
+Upewnij się, że twoja implementacja dokładnie odzwierciedla dostarczony plan implementacji i przestrzega wszystkich określonych zasad. Zwróć szczególną uwagę na strukturę komponentów, integrację API i obsługę interakcji użytkownika.
