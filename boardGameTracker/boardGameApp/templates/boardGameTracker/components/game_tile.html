@@ -2,27 +2,27 @@
 {% load game_filters %}
 
 <div class="game-tile {% if game.status == 'WARNING' %}warning{% elif game.status == 'ALARM' %}alarm{% endif %}"
-     onclick="window.location.href='{% url 'game_details' game.id %}'">
+     onclick="window.location.href='{% url 'game_details' game.id %}';">
     <div class="game-type-emoji">
         {% if game.game_type == 'TWO' %}
             👥
         {% else %}
-            🎉
+            👥👥
         {% endif %}
     </div>
     
     <h3 class="game-name">{{ game.name }}</h3>
     
     <div class="game-info">
-        <div class="last-played">
+        <div class="info-row">
             <span class="label">Ostatnia gra:</span>
             <span class="value">{{ game.last_played|date:"d.m.Y" }}</span>
         </div>
         
-        <div class="days-since">
+        <div class="info-row">
             <span class="label">Dni od ostatniej gry:</span>
             <span class="value {% if game.status != 'NORMAL' %}highlight{% endif %}">
-                {{ game.last_played|timesince:now|split:" "|first }}
+                {{ game.last_played|time_since_pl }}
             </span>
         </div>
     </div>
