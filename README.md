@@ -11,6 +11,7 @@ A simple web application designed to help users track their board game collectio
 - [Data Models](#data-models)
 - [Important Information](#important-information)
 - [Project Status](#project-status)
+- [Testing](#testing)
 - [License](#license)
 
 ## Project Description
@@ -138,6 +139,44 @@ This project is currently in development. The MVP is being implemented according
 2. 95% of users can add a new game to their library without assistance
 3. 100% of games are correctly flagged with warnings and alerts
 4. 80% of users understand the meaning of color markings for games
+
+## Testing
+
+### Test Types
+- Unit Tests: Testing individual models (UserProfile, BoardGame), data validation, and business logic
+- Integration Tests: Testing model interactions and HTTP request handling
+- Functional Tests: Testing user registration, game management, and core features
+- UI Tests: Testing interface responsiveness and error message display
+- Security Tests: Testing authentication and protection against unauthorized access
+
+### Test Environment
+- pytest as the main testing framework
+- pytest-django for Django integration
+- pytest-cov for code coverage analysis
+- Factory Boy for test object generation
+- Django Test Client for HTTP request testing
+- Selenium WebDriver for UI testing
+
+### Test Criteria
+- Minimum 80% code coverage
+- All critical paths covered by tests
+- No critical errors in functional tests
+- Intuitive and responsive user interface
+- Stable performance under load
+
+### Running Tests
+```bash
+# Run all tests
+pytest
+
+# Run tests with coverage report
+pytest --cov=boardGameApp
+
+# Run specific test category
+pytest tests/test_models.py
+pytest tests/test_views.py
+pytest tests/test_functional.py
+```
 
 ## License
 

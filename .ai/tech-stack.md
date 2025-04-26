@@ -8,5 +8,14 @@ Backend - pisany w pythonie, za wykorzystaniem frameowrka Django.
 - Łatwo zaimplementować autentykację użytkowników
 
 CI/CD i Hosting:
-- Github Actions do tworzenia pipeline’ów CI/CD
+- Github Actions do tworzenia pipeline'ów CI/CD
 - DigitalOcean do hostowania aplikacji za pośrednictwem obrazu docker
+
+Testy i Zapewnienie Jakości:
+- pytest jako główny framework testowy
+- pytest-django do integracji z Django
+- pytest-cov do analizy pokrycia kodu
+- Factory Boy do generowania danych testowych
+- Selenium WebDriver do testów UI
+- Minimum 80% pokrycia kodu testami
+- Automatyczne testy w pipeline CI/CD
