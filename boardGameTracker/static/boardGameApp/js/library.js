@@ -2,7 +2,12 @@
 function showAddGameModal() {
     const modal = document.getElementById('add-game-modal');
     if (modal) {
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
+        // Add a small delay before adding the show class to trigger the animation
+        requestAnimationFrame(() => {
+            modal.classList.add('show');
+        });
+        
         // Reset form and feedback when showing modal
         const form = modal.querySelector('form');
         const feedback = modal.querySelector('.feedback-message');
@@ -21,17 +26,21 @@ function showAddGameModal() {
 function hideAddGameModal() {
     const modal = document.getElementById('add-game-modal');
     if (modal) {
-        modal.style.display = 'none';
-        // Reset form state when hiding modal
-        const form = modal.querySelector('form');
-        if (form) {
-            form.reset();
-            const submitButton = form.querySelector('button[type="submit"]');
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Dodaj';
+        modal.classList.remove('show');
+        // Wait for the animation to complete before hiding the modal
+        setTimeout(() => {
+            modal.style.display = 'none';
+            // Reset form state when hiding modal
+            const form = modal.querySelector('form');
+            if (form) {
+                form.reset();
+                const submitButton = form.querySelector('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Dodaj';
+                }
             }
-        }
+        }, 300); // Match the transition duration from CSS
     }
 }
 
