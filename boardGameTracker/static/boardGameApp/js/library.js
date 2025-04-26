@@ -1,3 +1,131 @@
+// Modal control functions
+function showAddGameModal() {
+    const modal = document.getElementById('add-game-modal');
+    if (modal) {
+        modal.style.display = 'block';
+        // Reset form and feedback when showing modal
+        const form = modal.querySelector('form');
+        const feedback = modal.querySelector('.feedback-message');
+        if (form) form.reset();
+        if (feedback) feedback.remove();
+    }
+}
+
+function hideAddGameModal() {
+    const modal = document.getElementById('add-game-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Form validation and submission
+function validateGameForm(form) {
+    const gameName = form.querySelector('#game-name').value.trim();
+    const lastPlayed = form.querySelector('#last-played').value;
+    const gameType = form.querySelector('input[name="game_type"]:checked');
+    
+    if (gameName.length < 2) {
+        return { valid: false, message: 'Nazwa gry musi mieć co najmniej 2 znaki.' };
+    }
+    
+    if (!lastPlayed) {
+        return { valid: false, message: 'Data ostatniej rozgrywki jest wymagana.' };
+    }
+    
+    if (!gameType) {
+        return { valid: false, message: 'Wybierz typ gry.' };
+    }
+    
+    return { valid: true };
+}
+
+function showFeedback(form, message, isError = false) {
+    // Remove any existing feedback
+    const existingFeedback = form.querySelector('.feedback-message');
+    if (existingFeedback) {
+        existingFeedback.remove();
+    }
+    
+    // Create new feedback element
+    const feedback = document.createElement('div');
+    feedback.className = `feedback-message ${isError ? 'error' : 'success'}`;
+    feedback.textContent = message;
+    
+    // Insert before the buttons
+    const buttons = form.querySelector('.modal-buttons');
+    form.insertBefore(feedback, buttons);
+}
+
+function handleFormSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    // Validate form
+    const validation = validateGameForm(form);
+    if (!validation.valid) {
+        showFeedback(form, validation.message, true);
+        return;
+    }
+    
+    // Show loading state
+    submitButton.disabled = true;
+    submitButton.textContent = 'Dodawanie...';
+    
+    // Get the CSRF token
+    const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
+    
+    // Submit form
+    fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Accept': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) {
+            if (response.headers.get('content-type')?.includes('application/json')) {
+                return response.json().then(data => {
+                    throw new Error(data.message || 'Wystąpił błąd podczas dodawania gry.');
+                });
+            } else {
+                throw new Error('Wystąpił błąd podczas dodawania gry.');
+            }
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showFeedback(form, data.message);
+            setTimeout(() => {
+                hideAddGameModal();
+                window.location.reload();
+            }, 1500);
+        } else {
+            throw new Error(data.message || 'Wystąpił błąd podczas dodawania gry.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showFeedback(form, error.message, true);
+    })
+    .finally(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Dodaj';
+    });
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById('add-game-modal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Library script loaded');
 
@@ -73,4 +201,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial visibility update
     console.log('Running initial visibility update');
     updateGameVisibility();
+
+    // Add form submit handler
+    const addGameForm = document.querySelector('#add-game-modal form');
+    if (addGameForm) {
+        addGameForm.addEventListener('submit', handleFormSubmit);
+    }
 }); 

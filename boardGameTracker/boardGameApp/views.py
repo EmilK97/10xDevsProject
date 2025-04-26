@@ -5,7 +5,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import BoardGame, GameStatus
-from datetime import timedelta
+from datetime import timedelta, datetime
+from django.http import JsonResponse
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -96,23 +100,51 @@ def add_game_view(request):
         last_played = request.POST.get('last_played')
 
         if not all([name, game_type, last_played]):
-            messages.error(request, 'Wszystkie pola są wymagane.')
-            return redirect('library')
+            return JsonResponse({
+                'success': False,
+                'message': 'Wszystkie pola są wymagane.'
+            }, status=400)
 
         try:
+            # Convert date string to datetime
+            last_played_date = datetime.strptime(last_played, '%Y-%m-%d')
+            last_played_datetime = timezone.make_aware(
+                datetime.combine(last_played_date, datetime.min.time())
+            )
+
             game = BoardGame.objects.create(
                 name=name,
                 game_type=game_type,
-                last_played=last_played,
+                last_played=last_played_datetime,
                 owner=request.user
             )
-            messages.success(request, f'Gra "{name}" została dodana do twojej kolekcji.')
+            return JsonResponse({
+                'success': True,
+                'message': f'Gra "{name}" została dodana do twojej kolekcji.',
+                'game': {
+                    'id': str(game.id),
+                    'name': game.name,
+                    'game_type': game.game_type,
+                    'last_played': game.last_played.strftime('%Y-%m-%d')
+                }
+            })
+        except ValueError as e:
+            logger.error(f"ValueError in add_game_view: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'message': 'Nieprawidłowy format daty.'
+            }, status=400)
         except Exception as e:
-            messages.error(request, 'Wystąpił błąd podczas dodawania gry.')
+            logger.error(f"Error in add_game_view: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'message': 'Wystąpił błąd podczas dodawania gry.'
+            }, status=500)
 
-        return redirect('library')
-    
-    return redirect('library')
+    return JsonResponse({
+        'success': False,
+        'message': 'Nieprawidłowa metoda żądania.'
+    }, status=405)
 
 @login_required
 def mark_as_played_view(request, game_id):
