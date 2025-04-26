@@ -89,7 +89,7 @@ class BoardGame(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['name']
+        ordering = ['-last_played']
 
     def __str__(self):
         return f"{self.name} ({self.get_game_type_display()})"

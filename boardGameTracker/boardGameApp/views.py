@@ -4,7 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from .models import BoardGame
+from .models import BoardGame, GameStatus
+from datetime import timedelta
 
 # Create your views here.
 
@@ -60,10 +61,29 @@ def register_view(request):
 @login_required
 def library_view(request):
     """Display user's game library."""
+    # Get all user's games
+    games = request.user.games.all()
+    
+    # Calculate time thresholds
+    now = timezone.now()
+    one_year_ago = now - timedelta(days=365)
+    three_years_ago = now - timedelta(days=3*365)
+    
+    # Calculate statistics
+    total_games = games.count()
+    games_with_alarm = games.filter(last_played__lte=three_years_ago).count()
+    games_with_warning = games.filter(
+        last_played__lte=one_year_ago,
+        last_played__gt=three_years_ago
+    ).count()
+    
     context = {
-        'games': request.user.games.all(),
-        'now': timezone.now(),
-        'today': timezone.now().date(),
+        'games': games,
+        'now': now,
+        'today': now.date(),
+        'total_games': total_games,
+        'games_with_alarm': games_with_alarm,
+        'games_with_warning': games_with_warning,
     }
     return render(request, 'boardGameTracker/library.html', context)
 
