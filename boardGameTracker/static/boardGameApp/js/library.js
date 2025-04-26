@@ -6,7 +6,14 @@ function showAddGameModal() {
         // Reset form and feedback when showing modal
         const form = modal.querySelector('form');
         const feedback = modal.querySelector('.feedback-message');
-        if (form) form.reset();
+        if (form) {
+            form.reset();
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Dodaj';
+            }
+        }
         if (feedback) feedback.remove();
     }
 }
@@ -15,6 +22,16 @@ function hideAddGameModal() {
     const modal = document.getElementById('add-game-modal');
     if (modal) {
         modal.style.display = 'none';
+        // Reset form state when hiding modal
+        const form = modal.querySelector('form');
+        if (form) {
+            form.reset();
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Dodaj';
+            }
+        }
     }
 }
 
@@ -65,10 +82,12 @@ function handleFormSubmit(event) {
     const validation = validateGameForm(form);
     if (!validation.valid) {
         showFeedback(form, validation.message, true);
+        submitButton.disabled = false;
+        submitButton.textContent = 'Dodaj';
         return;
     }
     
-    // Show loading state
+    // Show loading state and disable button
     submitButton.disabled = true;
     submitButton.textContent = 'Dodawanie...';
     
@@ -100,6 +119,7 @@ function handleFormSubmit(event) {
     .then(data => {
         if (data.success) {
             showFeedback(form, data.message);
+            // Keep button disabled and wait for modal to close
             setTimeout(() => {
                 hideAddGameModal();
                 window.location.reload();
@@ -111,8 +131,7 @@ function handleFormSubmit(event) {
     .catch(error => {
         console.error('Error:', error);
         showFeedback(form, error.message, true);
-    })
-    .finally(() => {
+        // Re-enable button on error
         submitButton.disabled = false;
         submitButton.textContent = 'Dodaj';
     });
@@ -122,7 +141,7 @@ function handleFormSubmit(event) {
 window.onclick = function(event) {
     const modal = document.getElementById('add-game-modal');
     if (event.target === modal) {
-        modal.style.display = 'none';
+        hideAddGameModal();
     }
 }
 
@@ -207,4 +226,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addGameForm) {
         addGameForm.addEventListener('submit', handleFormSubmit);
     }
+
+    // Add escape key handler for modal
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            hideAddGameModal();
+        }
+    });
 }); 
