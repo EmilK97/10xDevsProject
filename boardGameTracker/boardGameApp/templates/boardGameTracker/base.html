@@ -14,7 +14,10 @@
             {% if user.is_authenticated %}
                 <div class="user-info">
                     <span>{{ user.username }}</span>
-                    <a href="{% url 'logout' %}" class="btn btn-logout">Wyloguj</a>
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-logout">Wyloguj</button>
+                    </form>
                 </div>
             {% endif %}
         </div>
