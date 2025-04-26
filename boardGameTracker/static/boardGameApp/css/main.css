@@ -25,38 +25,17 @@ header {
 }
 
 .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .user-info {
     display: flex;
     align-items: center;
     gap: 1rem;
-}
-
-.logout-form {
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-}
-
-.btn-logout {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-logout:hover {
-    background-color: #c82333;
 }
 
 /* Main content */
@@ -113,6 +92,16 @@ main {
 
 .btn-primary:hover {
     background-color: #0056b3;
+}
+
+.btn-logout {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+}
+
+.btn-logout:hover {
+    background-color: rgba(255,255,255,0.1);
 }
 
 /* Messages */
@@ -189,21 +178,27 @@ footer {
 
 /* Filters */
 .library-filters {
+    margin: 20px 0;
     display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 20px;
     flex-wrap: wrap;
 }
 
 .filter-toggle {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
 }
 
 .filter-toggle input[type="checkbox"] {
-    width: 1.2rem;
-    height: 1.2rem;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.filter-toggle label {
+    cursor: pointer;
+    user-select: none;
 }
 
 /* Games grid */
@@ -221,8 +216,10 @@ footer {
     padding: 1.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.3s ease-in-out;
     position: relative;
+    opacity: 1;
+    transform: scale(1);
 }
 
 .game-tile:hover {
@@ -236,6 +233,11 @@ footer {
 
 .game-tile.alarm {
     border: 2px solid var(--alarm-color);
+}
+
+.game-tile[style*="display: none"] {
+    opacity: 0;
+    transform: scale(0.8);
 }
 
 .game-type-emoji {

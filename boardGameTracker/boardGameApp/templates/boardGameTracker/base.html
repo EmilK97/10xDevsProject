@@ -14,10 +14,7 @@
             {% if user.is_authenticated %}
                 <div class="user-info">
                     <span>{{ user.username }}</span>
-                    <form method="post" action="{% url 'logout' %}" class="logout-form">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-logout">Wyloguj</button>
-                    </form>
+                    <a href="{% url 'logout' %}" class="btn btn-logout">Wyloguj</a>
                 </div>
             {% endif %}
         </div>
@@ -41,5 +38,10 @@
     <footer>
         <p>&copy; 2024 BoardGameTracker</p>
     </footer>
+
+    <!-- Base JavaScript -->
+    <script src="{% static 'boardGameApp/js/main.js' %}"></script>
+    <!-- Page specific JavaScript -->
+    {% block extra_js %}{% endblock %}
 </body>
 </html> 
