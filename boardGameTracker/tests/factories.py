@@ -17,10 +17,18 @@ class UserFactory(DjangoModelFactory):
     class Meta:
         model = User
         django_get_or_create = ('username',)
+        skip_postgeneration_save = True
 
     username = factory.Sequence(lambda n: f'test_user_{n}')
     email = factory.LazyAttribute(lambda obj: f'{obj.username}@example.com')
-    password = factory.PostGenerationMethodCall('set_password', 'testpass123')
+    @factory.post_generation
+    def password(self, create: bool, extracted: Any, **kwargs: Any) -> None:
+        """Post-generation hook to set and save the password."""
+        if not create:
+            return
+        password = extracted or 'testpass123'
+        self.set_password(password)
+        self.save()
 
 
 class BoardGameFactory(DjangoModelFactory):
@@ -29,6 +37,7 @@ class BoardGameFactory(DjangoModelFactory):
     class Meta:
         model = BoardGame
         django_get_or_create = ('name', 'owner')
+        skip_postgeneration_save = True
 
     name = factory.Sequence(lambda n: f'Test Game {n}')
     owner = factory.SubFactory(UserFactory)
