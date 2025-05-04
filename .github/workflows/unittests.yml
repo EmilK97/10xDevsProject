@@ -24,4 +24,4 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Django unit tests
-        run: python manage.py test 
+        run: python -m pytest boardGameTracker/
