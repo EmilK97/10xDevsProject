@@ -1,9 +1,11 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.utils import timezone
-from datetime import timedelta
-import string
 import random
+import string
+from datetime import timedelta
+
+from django.contrib.auth.models import User
+from django.db import models
+from django.utils import timezone
+
 
 class GameType(models.TextChoices):
     """
@@ -12,6 +14,7 @@ class GameType(models.TextChoices):
     """
     TWO_PLAYER = 'TWO', 'Two Player'
     MULTIPLAYER = 'MULTI', 'Multiplayer'
+
 
 class GameStatus(models.TextChoices):
     """
@@ -23,6 +26,7 @@ class GameStatus(models.TextChoices):
     NORMAL = 'NORMAL', 'Normal'
     WARNING = 'WARNING', 'Warning'
     ALARM = 'ALARM', 'Alarm'
+
 
 class UserProfile(models.Model):
     """
@@ -46,7 +50,7 @@ class UserProfile(models.Model):
         The 'games' attribute is available because of the related_name='games' in BoardGame.owner field.
         """
         return self.user.games.count()
-    
+
     @property
     def games_with_alerts(self):
         """
@@ -54,7 +58,7 @@ class UserProfile(models.Model):
         Uses the same status logic as defined in BoardGame.status property.
         The 'games' attribute is available because of the related_name='games' in BoardGame.owner field.
         """
-        three_years_ago = timezone.now() - timedelta(days=3*365)
+        three_years_ago = timezone.now() - timedelta(days=3 * 365)
         return self.user.games.filter(last_played__lte=three_years_ago).count()
 
     @property
@@ -66,6 +70,7 @@ class UserProfile(models.Model):
         """
         one_year_ago = timezone.now() - timedelta(days=365)
         return self.user.games.filter(last_played__lte=one_year_ago).count()
+
 
 class BoardGame(models.Model):
     """
@@ -101,7 +106,7 @@ class BoardGame(models.Model):
         Returns a GameStatus enum value.
         """
         days_since_played = (timezone.now() - self.last_played).days
-        
+
         if days_since_played > 3 * 365:  # 3 years
             return GameStatus.ALARM
         elif days_since_played > 365:  # 1 year
