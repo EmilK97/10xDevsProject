@@ -1,0 +1,11 @@
+{% extends "boardGameTracker/base.html" %}
+
+{% block title %}404 - Strona nie znaleziona{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <h2>404: taki adres nie istnieje</h2>
+    <p>Przepraszamy, ale strona której szukasz nie została znaleziona.</p>
+    <a href="{% url 'library' %}" class="btn">Wróć do biblioteki</a>
+</div>
+{% endblock %} 
