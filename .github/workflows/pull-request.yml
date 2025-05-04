@@ -1,0 +1,43 @@
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run unit tests
+        run: python -m pytest boardGameTracker/
+        id: tests
+
+      - name: Add PR comment
+        uses: actions/github-script@v6
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const outcome = "${{ steps.tests.outcome }}";
+            const commentBody = outcome === 'success'
+              ? '✅ Wszystkie testy przeszły pomyślnie!'
+              : '❌ Testy nie przeszły. Proszę sprawdzić logi.';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: commentBody
+            }); 
