@@ -17,6 +17,10 @@ def page_not_found_view(request, exception):
     """Handle 404 error page."""
     return render(request, 'boardGameTracker/404.html', status=404)
 
+def server_error_view(request):
+    """Handle 500 error page."""
+    return render(request, 'boardGameTracker/500.html', status=500)
+
 def login_view(request):
     """Handle user login."""
     # If user is already authenticated, redirect to library

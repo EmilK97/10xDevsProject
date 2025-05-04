@@ -1,0 +1,11 @@
+{% extends "boardGameTracker/base.html" %}
+
+{% block title %}500 - Błąd serwera{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <h2>500 - Błąd serwera!</h2>
+    <p>Przepraszamy, wystąpił wewnętrzny błąd serwera.</p>
+    <a href="{% url 'library' %}" class="btn">Wróć do biblioteki</a>
+</div>
+{% endblock %} 
