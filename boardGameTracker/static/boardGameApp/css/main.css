@@ -520,4 +520,38 @@ footer {
         width: 100%;
         margin-bottom: 0.5rem;
     }
+}
+
+/* Error page styling */
+.error-container {
+    text-align: center;
+    margin: 50px auto;
+    padding: 30px;
+    max-width: 600px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.error-container h2 {
+    color: #dc3545;
+    margin-bottom: 20px;
+}
+
+.error-container p {
+    margin-bottom: 25px;
+}
+
+.error-container .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.error-container .btn:hover {
+    background-color: #0056b3;
 } 
