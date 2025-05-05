@@ -25,7 +25,7 @@ jobs:
         id: tests
 
       - name: Upload test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         if: always()
         with:
           name: test-results
