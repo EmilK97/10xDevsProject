@@ -3,12 +3,24 @@
 
 <div class="game-tile {% if game.status == 'WARNING' %}warning{% elif game.status == 'ALARM' %}alarm{% endif %}"
      onclick="window.location.href='{% url 'game_details' game.id %}';">
-    <div class="game-type-emoji">
-        {% if game.game_type == 'TWO' %}
-            👥
-        {% else %}
-            👥👥
-        {% endif %}
+    <div class="game-tile-header">
+        <div class="game-type-emoji">
+            {% if game.game_type == 'TWO' %}
+                👥
+            {% else %}
+                👥👥
+            {% endif %}
+        </div>
+        
+        <div class="game-status-indicator">
+            {% if game.status == 'WARNING' %}
+                <span class="status-icon warning" title="Ostrzeżenie: Graj częściej!">⚠️</span>
+            {% elif game.status == 'ALARM' %}
+                <span class="status-icon alarm" title="Alarm: Dawno nie grałeś!">⛔</span>
+            {% else %}
+                <span class="status-icon normal" title="Status normalny">✓</span>
+            {% endif %}
+        </div>
     </div>
     
     <h3 class="game-name">{{ game.name }}</h3>
@@ -25,5 +37,9 @@
                 {{ game.last_played|time_since_pl }}
             </span>
         </div>
+    </div>
+    
+    <div class="game-tile-footer">
+        <span class="view-details">Kliknij, aby zobaczyć szczegóły</span>
     </div>
 </div> 

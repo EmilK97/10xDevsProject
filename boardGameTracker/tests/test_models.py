@@ -112,4 +112,4 @@ def test_board_game_str_representation(board_game_factory: BoardGameFactory) -> 
         board_game_factory: Factory for creating test BoardGame instances
     """
     game = board_game_factory.create(name='Monopoly')
-    assert str(game) == 'Monopoly (Multiplayer)'
+    assert str(game) == 'Monopoly (Wieloosobowa)'

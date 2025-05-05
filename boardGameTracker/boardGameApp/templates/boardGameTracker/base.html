@@ -6,6 +6,7 @@
     <title>{% block title %}BoardGameTracker{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'boardGameApp/css/main.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <header>
@@ -39,7 +40,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 BoardGameTracker</p>
+        <p>&copy; 2025 BoardGameTracker</p>
     </footer>
 
     <!-- Base JavaScript -->

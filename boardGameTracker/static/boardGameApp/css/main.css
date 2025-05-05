@@ -236,10 +236,37 @@ footer {
     border-color: var(--alarm-color);
 }
 
+.game-tile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-status-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-icon {
+    font-size: 1.8rem;
+}
+
+.status-icon.normal {
+    color: #2e7d32;
+}
+
+.status-icon.warning {
+    color: var(--warning-color);
+}
+
+.status-icon.alarm {
+    color: var(--alarm-color);
+}
+
 .game-type-emoji {
     font-size: 2rem;
     line-height: 1;
-    margin-bottom: 0.5rem;
 }
 
 .game-name {
@@ -248,6 +275,19 @@ footer {
     color: var(--text-color);
     font-weight: 600;
     line-height: 1.3;
+}
+
+.game-tile-footer {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #eee;
+    text-align: center;
+}
+
+.view-details {
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
 }
 
 .game-info {
