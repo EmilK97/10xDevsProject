@@ -13,6 +13,15 @@
         <h2>{{ game.name }}</h2>
     </div>
 
+    <div class="info-help">
+        <div class="help-icon">?</div>
+        <div class="help-text">
+            Ten widok pokazuje szczegóły gry planszowej. Możesz tu zobaczyć informacje takie jak data ostatniej rozgrywki, 
+            ile dni minęło od ostatniej gry oraz aktualny status. Użyj przycisku "Zagrałem dzisiaj" aby zaktualizować 
+            ostatnią datę gry na dzisiejszą. Możesz również usunąć grę z biblioteki.
+        </div>
+    </div>
+
     <div class="game-details-content">
         <div class="game-info-card {% if game.status == 'WARNING' %}warning{% elif game.status == 'ALARM' %}alarm{% endif %}">
             <div class="game-type">
@@ -49,11 +58,6 @@
                 </div>
 
                 <div class="stat-row">
-                    <span class="label">ID gry:</span>
-                    <span class="value">{{ game.id }}</span>
-                </div>
-
-                <div class="stat-row">
                     <span class="label">Data dodania:</span>
                     <span class="value">{{ game.created_at|date:"d.m.Y" }}</span>
                 </div>
@@ -78,14 +82,16 @@
 <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="modal" style="display: none;">
     <div class="modal-content">
-        <h3>Potwierdzenie usunięcia</h3>
-        <p>Czy jesteś pewny, że chcesz usunąć grę planszową?</p>
-        <div class="modal-actions">
+        <span class="close" onclick="closeDeleteModal()">&times;</span>
+        <h2>Potwierdzenie usunięcia</h2>
+        <p class="modal-message">Czy jesteś pewny, że chcesz usunąć grę <strong>{{ game.name }}</strong>?</p>
+        <p class="modal-warning">Ta operacja jest nieodwracalna.</p>
+        <div class="modal-buttons">
+            <button type="button" class="btn" onclick="closeDeleteModal()">Anuluj</button>
             <form method="post" action="{% url 'delete_game' game.id %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Usuń</button>
             </form>
-            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Anuluj</button>
         </div>
     </div>
 </div>
@@ -100,7 +106,7 @@
     }
 
     .game-details-header {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
 
     .game-details-header h2 {
@@ -115,6 +121,43 @@
 
     .btn-back:hover {
         text-decoration: underline;
+    }
+    
+    .info-help {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .help-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 10px;
+        cursor: help;
+        transition: all 0.2s ease;
+    }
+    
+    .help-icon:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    .help-text {
+        background-color: #f9f9f9;
+        border-left: 3px solid var(--primary-color);
+        padding: 10px 15px;
+        border-radius: 0 4px 4px 0;
+        font-size: 0.9rem;
+        color: #555;
+        line-height: 1.4;
+        flex: 1;
     }
 
     .game-info-card {
@@ -221,30 +264,90 @@
     
     /* Modal styles */
     .modal {
-        display: none;
         position: fixed;
         z-index: 1000;
         left: 0;
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0,0,0,0.5);
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .modal.show {
+        opacity: 1;
+        visibility: visible;
     }
     
     .modal-content {
         background-color: white;
         margin: 15% auto;
-        padding: 2rem;
-        border-radius: 8px;
+        padding: 2.5rem;
+        border-radius: 12px;
         max-width: 500px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        position: relative;
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+        width: 90%;
     }
     
-    .modal-actions {
+    .modal.show .modal-content {
+        transform: translateY(0);
+    }
+    
+    .close {
+        position: absolute;
+        right: 1.5rem;
+        top: 1.5rem;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #666;
+        transition: color 0.2s ease;
+        line-height: 1;
+    }
+    
+    .close:hover {
+        color: #333;
+    }
+    
+    .modal h2 {
+        margin: 0 0 1.5rem 0;
+        color: #333;
+        font-size: 1.5rem;
+    }
+    
+    .modal-message {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 1rem;
+    }
+    
+    .modal-warning {
+        font-size: 0.9rem;
+        color: #f44336;
+        margin-bottom: 1.5rem;
+    }
+    
+    .modal-buttons {
         display: flex;
         justify-content: flex-end;
         gap: 1rem;
         margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e0e0e0;
+    }
+    
+    .modal-buttons form {
+        margin: 0;
+        padding: 0;
     }
 
     @media (max-width: 768px) {
@@ -266,6 +369,26 @@
             flex-direction: column;
             gap: 1rem;
         }
+        
+        .modal-content {
+            margin: 5% auto;
+            padding: 15px;
+            width: 95%;
+        }
+        
+        .modal-buttons {
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .modal-buttons button,
+        .modal-buttons form {
+            width: 100%;
+        }
+        
+        .help-text {
+            font-size: 0.8rem;
+        }
     }
 </style>
 {% endblock %}
@@ -273,11 +396,21 @@
 {% block extra_js %}
 <script>
     function openDeleteModal() {
-        document.getElementById('deleteModal').style.display = 'block';
+        const modal = document.getElementById('deleteModal');
+        modal.style.display = 'flex';
+        // Add a small delay before adding the show class to trigger the animation
+        requestAnimationFrame(() => {
+            modal.classList.add('show');
+        });
     }
     
     function closeDeleteModal() {
-        document.getElementById('deleteModal').style.display = 'none';
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('show');
+        // Wait for the animation to complete before hiding the modal
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300); // Match the transition duration from CSS
     }
     
     // Close modal when clicking outside of it
@@ -287,6 +420,13 @@
             closeDeleteModal();
         }
     }
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeDeleteModal();
+        }
+    });
     
     // Ensure modal is hidden on page load
     document.addEventListener('DOMContentLoaded', function() {
