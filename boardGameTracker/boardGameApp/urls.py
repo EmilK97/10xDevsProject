@@ -10,4 +10,5 @@ urlpatterns = [
     path('add-game/', views.add_game_view, name='add_game'),
     path('game/<str:game_id>/', views.game_details_view, name='game_details'),
     path('game/<str:game_id>/mark-played/', views.mark_as_played_view, name='mark_as_played'),
+    path('game/<str:game_id>/delete/', views.delete_game_view, name='delete_game'),
 ] 
