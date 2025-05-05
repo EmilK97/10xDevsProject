@@ -18,11 +18,35 @@ jobs:
           python-version: '3.10.11'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          pip install pytest-html
 
       - name: Run unit tests
         run: python -m pytest boardGameTracker/
         id: tests
+
+      - name: Create test report directory
+        run: mkdir -p test-reports
+        if: always()
+
+      - name: Check if report exists
+        run: |
+          if [ -f "test-reports/report.html" ]; then
+            echo "Report exists"
+          else
+            echo "Report not found, creating dummy file"
+            mkdir -p test-reports
+            echo "<html><body><h1>Test Report</h1><p>Report not generated properly.</p></body></html>" > test-reports/report.html
+          fi
+        if: always()
+
+      - name: Upload test report
+        uses: actions/upload-artifact@master
+        if: always()
+        with:
+          name: test-results
+          path: test-reports/report.html
 
       - name: Add PR comment
         uses: actions/github-script@v6
@@ -31,9 +55,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const outcome = "${{ steps.tests.outcome }}";
+            const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const commentBody = outcome === 'success'
-              ? '✅ Wszystkie testy przeszły pomyślnie!'
-              : '❌ Testy nie przeszły. Proszę sprawdzić logi.';
+              ? `✅ Wszystkie testy przeszły pomyślnie!\n\n[Zobacz raport testów](${artifactUrl})`
+              : `❌ Testy nie przeszły. Proszę sprawdzić logi.\n\n[Zobacz raport testów](${artifactUrl})`;
             
             github.rest.issues.createComment({
               issue_number: context.issue.number,
