@@ -16,8 +16,8 @@
     <div class="info-help">
         <div class="help-icon">?</div>
         <div class="help-text">
-            Ten widok pokazuje szczegóły gry planszowej. Możesz tu zobaczyć informacje takie jak data ostatniej rozgrywki, 
-            ile dni minęło od ostatniej gry oraz aktualny status. Użyj przycisku "Zagrałem dzisiaj" aby zaktualizować 
+            Ten widok pokazuje szczegóły gry planszowej.<br>
+            Użyj przycisku "Zagrałem dzisiaj" aby zaktualizować<br>
             ostatnią datę gry na dzisiejszą. Możesz również usunąć grę z biblioteki.
         </div>
     </div>
@@ -42,7 +42,7 @@
                     <span class="label">Data ostatniej rozgrywki:</span>
                     <span class="value">{{ game.last_played|date:"d.m.Y" }}</span>
                 </div>
-                
+
                 <div class="stat-row">
                     <span class="label">Dni od ostatniej gry:</span>
                     <span class="value {% if game.status != 'NORMAL' %}highlight{% endif %}">
@@ -70,7 +70,7 @@
                         Zagrałem dzisiaj
                     </button>
                 </form>
-                
+
                 <button type="button" class="btn btn-danger" onclick="openDeleteModal()">
                     Usuń grę
                 </button>
