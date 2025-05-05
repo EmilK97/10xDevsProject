@@ -17,8 +17,8 @@
         <div class="help-icon">?</div>
         <div class="help-text">
             Ten widok pokazuje szczegóły gry planszowej.<br>
-            Użyj przycisku "Zagrałem dzisiaj" aby zaktualizować<br>
-            ostatnią datę gry na dzisiejszą. Możesz również usunąć grę z biblioteki.
+            Użyj przycisku "Zagrałem dzisiaj" aby zaktualizować ostatnią datę gry na dzisiejszą.<br>
+            Możesz również usunąć grę z biblioteki.
         </div>
     </div>
 
@@ -53,6 +53,13 @@
                 <div class="stat-row">
                     <span class="label">Status:</span>
                     <span class="value status-badge {{ game.status|lower }}">
+                        {% if game.status == 'WARNING' %}
+                            <span class="status-icon-large">⚠️</span>
+                        {% elif game.status == 'ALARM' %}
+                            <span class="status-icon-large">⛔</span>
+                        {% else %}
+                            <span class="status-icon-large">✓</span>
+                        {% endif %}
                         {{ game.get_status_display }}
                     </span>
                 </div>
@@ -235,6 +242,12 @@
     .status-badge.alarm {
         background-color: #ffebee;
         color: #c62828;
+    }
+
+    .status-icon-large {
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+        vertical-align: middle;
     }
 
     .game-actions {

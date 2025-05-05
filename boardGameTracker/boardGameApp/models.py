@@ -12,8 +12,8 @@ class GameType(models.TextChoices):
     Enum representing the type of board game.
     Used to distinguish between two-player and multiplayer games.
     """
-    TWO_PLAYER = 'TWO', 'Two Player'
-    MULTIPLAYER = 'MULTI', 'Multiplayer'
+    TWO_PLAYER = 'TWO', 'Dwuosobowa'
+    MULTIPLAYER = 'MULTI', 'Wieloosobowa'
 
 
 class GameStatus(models.TextChoices):
