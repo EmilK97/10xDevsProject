@@ -6,12 +6,21 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import BoardGame, GameStatus
 from datetime import timedelta, datetime
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 import logging
+from typing import Dict, Any, Optional, Union
 
 logger = logging.getLogger(__name__)
 
 # Create your views here.
+
+def page_not_found_view(request, exception):
+    """Handle 404 error page."""
+    return render(request, 'boardGameTracker/404.html', status=404)
+
+def server_error_view(request):
+    """Handle 500 error page."""
+    return render(request, 'boardGameTracker/500.html', status=500)
 
 def login_view(request):
     """Handle user login."""
@@ -163,3 +172,30 @@ def game_details_view(request, game_id):
         'now': timezone.now(),
     }
     return render(request, 'boardGameTracker/game_details.html', context)
+
+@login_required
+def delete_game_view(request, game_id: int):
+    """
+    Delete a board game from user's collection.
+    
+    Args:
+        request (HttpRequest): The HTTP request object
+        game_id (int): The ID of the game to delete
+        
+    Returns:
+        Redirect to the library view after successful deletion
+    """
+    # Get the game object or return 404 if not found
+    game = get_object_or_404(BoardGame, id=game_id, owner=request.user)
+    
+    # Store the game name before deletion for the success message
+    game_name = game.name
+    
+    # Delete the game
+    game.delete()
+    
+    # Add success message
+    messages.success(request, f'Gra "{game_name}" została usunięta z twojej kolekcji.')
+    
+    # Redirect to library view
+    return redirect('library')
